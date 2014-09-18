@@ -1,0 +1,140 @@
+CCS PCH C Compiler, Version 4.124, 5967               23-abr-13 08:36
+
+               Filename: E:\Eletronica\Projetos\Contador\contador.lst
+
+               ROM used: 390 bytes (1%)
+                         Largest free fragment is 32378
+               RAM used: 6 (0%) at main() level
+                         16 (1%) worst case
+               Stack:    2 locations
+
+*
+0000:  GOTO   0132
+.................... #include <18f452.h> 
+.................... //////// Standard Header file for the PIC18F452 device //////////////// 
+.................... #device PIC18F452 
+.................... #list 
+....................  
+....................  
+.................... #FUSES H4 
+....................  
+.................... #USE delay(crystal=10MHz, clock=40MHz) 
+*
+0004:  CLRF   FEA
+0006:  MOVLW  06
+0008:  MOVWF  FE9
+000A:  MOVF   FEF,W
+000C:  BZ    002A
+000E:  MOVLW  0C
+0010:  MOVWF  01
+0012:  CLRF   00
+0014:  DECFSZ 00,F
+0016:  BRA    0014
+0018:  DECFSZ 01,F
+001A:  BRA    0012
+001C:  MOVLW  F7
+001E:  MOVWF  00
+0020:  DECFSZ 00,F
+0022:  BRA    0020
+0024:  BRA    0026
+0026:  DECFSZ FEF,F
+0028:  BRA    000E
+002A:  GOTO   0154 (RETURN)
+.................... #USE rs232(baud=9600, xmit=PIN_C6) 
+002E:  BCF    F94.6
+0030:  BCF    F8B.6
+0032:  MOVLW  08
+0034:  MOVWF  01
+0036:  BRA    0038
+0038:  NOP   
+003A:  BSF    01.7
+003C:  BRA    005A
+003E:  BCF    01.7
+0040:  RRCF   10,F
+0042:  BTFSC  FD8.0
+0044:  BSF    F8B.6
+0046:  BTFSS  FD8.0
+0048:  BCF    F8B.6
+004A:  BSF    01.6
+004C:  BRA    005A
+004E:  BCF    01.6
+0050:  DECFSZ 01,F
+0052:  BRA    0040
+0054:  BRA    0056
+0056:  NOP   
+0058:  BSF    F8B.6
+005A:  MOVLW  01
+005C:  MOVWF  00
+005E:  CLRF   FE9
+0060:  DECFSZ FE9,F
+0062:  BRA    0060
+0064:  DECFSZ 00,F
+0066:  BRA    005E
+0068:  MOVLW  53
+006A:  MOVWF  FE9
+006C:  DECFSZ FE9,F
+006E:  BRA    006C
+0070:  BRA    0072
+0072:  NOP   
+0074:  BTFSC  01.7
+0076:  BRA    003E
+0078:  BTFSC  01.6
+007A:  BRA    004E
+007C:  RETURN 0
+....................  
+.................... int main(void) { 
+*
+0132:  CLRF   FF8
+0134:  BCF    FD0.7
+0136:  CLRF   FEA
+0138:  CLRF   FE9
+013A:  BCF    F94.6
+013C:  BSF    F8B.6
+013E:  BSF    FC1.0
+0140:  BSF    FC1.1
+0142:  BSF    FC1.2
+0144:  BCF    FC1.3
+.................... 	setup_timer_1(T1_EXTERNAL | T1_DIV_BY_8); 
+0146:  MOVLW  B7
+0148:  MOVWF  FCD
+.................... 	while (TRUE) { 
+.................... 		delay_ms(1000); 
+014A:  MOVLW  04
+014C:  MOVWF  05
+014E:  MOVLW  FA
+0150:  MOVWF  06
+0152:  BRA    0004
+0154:  DECFSZ 05,F
+0156:  BRA    014E
+.................... 		printf("%Lu\r\n", get_timer1()); 
+0158:  MOVF   FCE,W
+015A:  MOVFF  FCF,03
+015E:  MOVWF  05
+0160:  MOVFF  FCF,06
+0164:  MOVLW  10
+0166:  MOVWF  FE9
+0168:  MOVFF  FCF,08
+016C:  MOVFF  05,07
+0170:  BRA    007E
+0172:  MOVLW  0D
+0174:  MOVWF  10
+0176:  RCALL  002E
+0178:  MOVLW  0A
+017A:  MOVWF  10
+017C:  RCALL  002E
+.................... 	} 
+017E:  BRA    014A
+.................... 	return 0; 
+0180:  MOVLW  00
+0182:  MOVWF  01
+.................... } 
+0184:  SLEEP 
+
+Configuration Fuses:
+   Word  1: 2600   H4 NOOSCSEN
+   Word  2: 0E0E   PUT BROWNOUT BORV20 NOWDT WDT128
+   Word  3: 0100   CCP2C1
+   Word  4: 0081   STVREN NOLVP NODEBUG
+   Word  5: C00F   NOPROTECT NOCPB NOCPD
+   Word  6: E00F   NOWRT NOWRTC NOWRTB NOWRTD
+   Word  7: 400F   NOEBTR NOEBTRB
